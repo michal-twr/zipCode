@@ -15,7 +15,7 @@ public class ZippopotamClient : IZipApiClient
 
     public async Task<string> GetZipName(string zipCode)
     {
-        var zipData = await _httpClient.GetFromJsonAsync<ZippopotamApiResponse>($"https://api.zippopotam.us/us/{zipCode}");
+        var zipData = await _httpClient.GetFromJsonAsync<ZippopotamApiResponse>($"/us/{zipCode}");
         return $"{zipData.Places[0].PlaceName} - {zipData.Places[0].State} {zipData.Country}";
 
     }

@@ -1,4 +1,5 @@
 using Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
@@ -8,9 +9,10 @@ namespace Infrastructure;
 public static class Extensions
 {
 
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHttpClient<IZipApiClient, ZippopotamClient>()
+        var url = configuration.GetValue<string>("Zippopotam:Url");
+        services.AddHttpClient<IZipApiClient, ZippopotamClient>(x => x.BaseAddress = new Uri(url))
             .SetHandlerLifetime((TimeSpan.FromMinutes(2)))
             .AddPolicyHandler(GetRetryPolicy());
             
